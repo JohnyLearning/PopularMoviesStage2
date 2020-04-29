@@ -34,27 +34,16 @@ import java.util.Scanner;
  */
 public final class NetworkUtils {
 
-    private static final String API_KEY = "<YOUR_MOVIE_DB_API_KEY_HERE>";
+    private static final String API_KEY = BuildConfig.MOVIE_DB_KEY;
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/discover/movie";
 
+    private static final String IMAGE_BASE_URL = "";
+
     private static final String API_KEY_PARAM = "api_key";
     public static final String SORT_BY_PARAM = "sort_by";
-
-    /*
-     * NOTE: These values only effect responses from OpenWeatherMap, NOT from the fake weather
-     * server. They are simply here to allow us to teach you how to build a URL if you were to use
-     * a real API.If you want to connect your app to OpenWeatherMap's API, feel free to! However,
-     * we are not going to show you how to do so in this course.
-     */
-
-    /* The format we want our API to return */
-    private static final String format = "json";
-
-    /* The query parameter allows us to provide a location string to the API */
-    private static final String QUERY_PARAM = "q";
 
     public static URL getURL(Pair<String, String>[] params) {
         Uri.Builder moviesDbUriBuilder = Uri.parse(BASE_URL).buildUpon()

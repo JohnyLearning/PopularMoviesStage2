@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.ivanhadzhi.popularmovies.MoviesActivity"/>
+        <activity android:name="com.ivanhadzhi.popularmovies.MovieDetailActivity"/>
     </application>
 
 </manifest>
