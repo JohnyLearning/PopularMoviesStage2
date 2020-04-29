@@ -12,7 +12,6 @@ public class SplashActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        try { Thread.sleep(3000); } catch (Exception ex) {};
         // start movies activity
 
         startActivity(new Intent(SplashActivity.this, MoviesActivity.class));
