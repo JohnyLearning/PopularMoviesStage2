@@ -34,6 +34,8 @@ import java.util.Scanner;
  */
 public final class NetworkUtils {
 
+    private NetworkUtils() {}
+
     /**
      * To prospective reviewers: please replace the value of the API_KEY with your own Movie DB api key
      */
@@ -50,8 +52,7 @@ public final class NetworkUtils {
     public static URL getImageURL(ImageSize size, String posterPath) {
         Uri imageUri = Uri.parse(BASE_IMAGE_URL + size + posterPath).buildUpon().build();
         try {
-            URL imageUrl = new URL(imageUri.toString());
-            return imageUrl;
+            return new URL(imageUri.toString());
         } catch (MalformedURLException e) {
             Log.e(TAG, e.getLocalizedMessage(), e);
             return null;
@@ -83,10 +84,9 @@ public final class NetworkUtils {
      */
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        try {
-            InputStream in = urlConnection.getInputStream();
-
-            Scanner scanner = new Scanner(in);
+        try
+            (InputStream in = urlConnection.getInputStream();
+            Scanner scanner = new Scanner(in)) {
             scanner.useDelimiter("\\A");
 
             boolean hasInput = scanner.hasNext();
@@ -94,7 +94,6 @@ public final class NetworkUtils {
             if (hasInput) {
                 response = scanner.next();
             }
-            scanner.close();
             return response;
         } finally {
             urlConnection.disconnect();
