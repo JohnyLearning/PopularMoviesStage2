@@ -15,12 +15,12 @@
  */
 package com.ivanhadzhi.popularmovies.utilities;
 
-import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-import android.util.Pair;
 
 import com.ivanhadzhi.popularmovies.BuildConfig;
+import com.ivanhadzhi.popularmovies.model.ImageSize;
+import com.ivanhadzhi.popularmovies.model.SortBy;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,25 +34,34 @@ import java.util.Scanner;
  */
 public final class NetworkUtils {
 
+    /**
+     * To prospective reviewers: please replace the value of the API_KEY with your own Movie DB api key
+     */
     private static final String API_KEY = BuildConfig.MOVIE_DB_KEY;
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    private static final String BASE_URL = "https://api.themoviedb.org/3/discover/movie";
+    private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
 
-    private static final String IMAGE_BASE_URL = "";
+    public static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/";
 
     private static final String API_KEY_PARAM = "api_key";
-    public static final String SORT_BY_PARAM = "sort_by";
 
-    public static URL getURL(Pair<String, String>[] params) {
-        Uri.Builder moviesDbUriBuilder = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter(API_KEY_PARAM, API_KEY);
-        if (params != null && params.length > 0) {
-            for (Pair<String, String> param: params) {
-                moviesDbUriBuilder.appendQueryParameter(param.first, param.second);
-            }
+    public static URL getImageURL(ImageSize size, String posterPath) {
+        Uri imageUri = Uri.parse(BASE_IMAGE_URL + size + posterPath).buildUpon().build();
+        try {
+            URL imageUrl = new URL(imageUri.toString());
+            return imageUrl;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, e.getLocalizedMessage(), e);
+            return null;
         }
+    }
+
+    public static URL getURL(SortBy sortBy) {
+
+        Uri.Builder moviesDbUriBuilder = Uri.parse(BASE_URL + sortBy).buildUpon()
+                .appendQueryParameter(API_KEY_PARAM, API_KEY);
         Uri moviesUri = moviesDbUriBuilder.build();
 
         try {

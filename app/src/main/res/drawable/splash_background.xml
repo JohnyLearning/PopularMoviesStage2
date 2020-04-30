@@ -3,6 +3,8 @@
     <item android:drawable="@color/colorPrimary" />
 
     <item>
-        <bitmap android:src="@drawable/watching_tv" android:gravity="center"/>
+        <bitmap
+            android:src="@drawable/watching_tv"
+            android:gravity="center" />
     </item>
 </layer-list>

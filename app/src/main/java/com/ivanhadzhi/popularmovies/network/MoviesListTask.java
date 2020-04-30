@@ -2,10 +2,10 @@ package com.ivanhadzhi.popularmovies.network;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.util.Pair;
 
 import com.ivanhadzhi.popularmovies.BuildConfig;
 import com.ivanhadzhi.popularmovies.model.Movie;
+import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
 
 import org.json.JSONArray;
@@ -23,20 +23,7 @@ public class MoviesListTask extends AsyncTask<String, Void, List<Movie>> {
 
     private OnSuccess successCallback;
     private OnError errorCallback;
-    private SortByParam sortBy;
-
-    public enum SortByParam {
-
-        mostPopular("popular.desc"),
-        topRated("vote_average.desc");
-
-        private String paramValue;
-
-        SortByParam(String paramValue) {
-            this.paramValue = paramValue;
-        }
-
-    }
+    private SortBy sortBy;
 
     @FunctionalInterface
     public interface OnSuccess {
@@ -50,7 +37,7 @@ public class MoviesListTask extends AsyncTask<String, Void, List<Movie>> {
 
     public MoviesListTask(OnSuccess successCallback,
                           OnError errorCallback,
-                          SortByParam sortBy) {
+                          SortBy sortBy) {
         this.successCallback = successCallback;
         this.errorCallback = errorCallback;
         this.sortBy = sortBy;
@@ -62,7 +49,7 @@ public class MoviesListTask extends AsyncTask<String, Void, List<Movie>> {
     }
 
     private List<Movie> fetchMovies() {
-        URL url = NetworkUtils.getURL(new Pair[]{new Pair(NetworkUtils.SORT_BY_PARAM, sortBy.paramValue)});
+        URL url = NetworkUtils.getURL(sortBy);
         try {
             String response = NetworkUtils.getResponseFromHttpUrl(url);
             if (BuildConfig.DEBUG) {
@@ -71,7 +58,7 @@ public class MoviesListTask extends AsyncTask<String, Void, List<Movie>> {
             JSONObject initial = new JSONObject(response);
             JSONArray results = initial.getJSONArray("results");
             ArrayList<Movie> movies = new ArrayList<>();
-            for(int i = 0; i < results.length(); i++) {
+            for (int i = 0; i < results.length(); i++) {
                 JSONObject movieObject = results.getJSONObject(i);
                 if (movieObject != null && movieObject.getString("poster_path") != "null") {
                     movies.add(new Movie(

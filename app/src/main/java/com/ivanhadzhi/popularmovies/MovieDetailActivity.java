@@ -8,8 +8,12 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ivanhadzhi.popularmovies.model.ImageSize;
 import com.ivanhadzhi.popularmovies.model.Movie;
+import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
+
+import org.joda.time.DateTime;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -17,6 +21,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView title;
     private ImageView poster;
     private TextView userRating;
+    private TextView synopsis;
+    private TextView releaseDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,18 +31,25 @@ public class MovieDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.movie_details_title);
         }
         Movie movie = getIntent().getParcelableExtra(MOVIE_BUNDLE_PARAM);
-        // TODO: move this url to network utils
         poster = findViewById(R.id.movie_poster);
-        Picasso.get().load("http://image.tmdb.org/t/p/w500" + movie.getPosterPath()).into(poster);
+        Picasso.get().load(NetworkUtils.getImageURL(ImageSize.w500, movie.getPosterPath()).toString()).into(poster);
         title = findViewById(R.id.movie_title);
         title.setText(movie.getOriginalTitle());
         userRating = findViewById(R.id.movie_user_rating);
         userRating.setText(String.valueOf(movie.getUserRating()));
+        synopsis = findViewById(R.id.movie_synopsis);
+        synopsis.setText(movie.getOverview());
+        releaseDate = findViewById(R.id.movie_release_date);
+        if (movie.getReleaseDate() != null) {
+            DateTime dateTime = new DateTime(movie.getReleaseDate());
+            releaseDate.setText(dateTime.toString("d MMM, yyyy"));
+        }
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();

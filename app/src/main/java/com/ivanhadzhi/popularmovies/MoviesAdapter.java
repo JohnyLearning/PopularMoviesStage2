@@ -3,15 +3,15 @@ package com.ivanhadzhi.popularmovies;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ivanhadzhi.popularmovies.model.ImageSize;
 import com.ivanhadzhi.popularmovies.model.Movie;
+import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -44,11 +44,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (movies != null && movies.size() > 0) {
+        if (movies != null && movies.size() > position && movies.get(position).getPosterPath() != null) {
             Movie movie = movies.get(position);
             holder.movieTitle.setText(movie.getTitle());
-            // TODO: move this url to network utils
-            Picasso.get().load("https://image.tmdb.org/t/p/w185" + movie.getPosterPath()).into(holder.moviePoster);
+            Picasso.get()
+                    .load(NetworkUtils.getImageURL(ImageSize.w300, movie.getPosterPath()).toString())
+                    .placeholder(R.drawable.no_image)
+                    .error(R.drawable.no_image)
+                    .into(holder.moviePoster);
         } else {
             holder.moviePoster.setImageResource(R.drawable.no_image);
         }
