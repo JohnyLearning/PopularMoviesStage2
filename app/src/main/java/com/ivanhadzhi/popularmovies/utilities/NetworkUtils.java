@@ -34,6 +34,8 @@ import java.util.Scanner;
  */
 public final class NetworkUtils {
 
+    private static final int CONNECTION_TIMEOUT = 1000 /* milliseconds */ * 20 /* seconds */;
+
     private NetworkUtils() {}
 
     /**
@@ -84,6 +86,7 @@ public final class NetworkUtils {
      */
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
         try
             (InputStream in = urlConnection.getInputStream();
             Scanner scanner = new Scanner(in)) {

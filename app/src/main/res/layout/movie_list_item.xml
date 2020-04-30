@@ -22,7 +22,7 @@
         tools:text="movie title"
         android:maxLines="1"
         android:textColor="@color/white"
-        android:textSize="12sp"
+        android:textSize="@dimen/movie_item_title"
         android:gravity="center" />
 
 </LinearLayout>

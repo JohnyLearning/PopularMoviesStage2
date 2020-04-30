@@ -31,13 +31,16 @@ public class MoviesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movies);
         moviesContainer = findViewById(R.id.rv_movies);
         moviesContainer.setLayoutManager(new GridLayoutManager(this, 3));
-        setActionBarTitle(POPULAR);
+        setActionBarTitle(loadSortBy());
+        loadMovies(loadSortBy());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        loadMovies(loadSortBy());
+        if (moviesAdapter != null && moviesAdapter.getItemCount() == 0) {
+            loadMovies(loadSortBy());
+        }
     }
 
     @Override
