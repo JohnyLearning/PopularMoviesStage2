@@ -1,5 +1,13 @@
 apply plugin: 'com.android.application'
 
+Properties properties = new Properties()
+def propertiesFile = project.rootProject.file('local.properties')
+if (propertiesFile.exists()) {
+    properties.load(propertiesFile.newDataInputStream())
+}
+
+def MOVIE_DB_KEY = "\"" + properties.getProperty('api.token') + "\""
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -11,6 +19,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        all {
+            buildConfigField 'String', 'MOVIE_DB_KEY', MOVIE_DB_KEY
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
