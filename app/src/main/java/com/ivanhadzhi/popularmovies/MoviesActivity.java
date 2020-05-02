@@ -1,6 +1,7 @@
 package com.ivanhadzhi.popularmovies;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +31,8 @@ public class MoviesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
         moviesContainer = findViewById(R.id.rv_movies);
-        moviesContainer.setLayoutManager(new GridLayoutManager(this, 3));
+        int numberOfItemsPerRow = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? 5 : 3;
+        moviesContainer.setLayoutManager(new GridLayoutManager(this, numberOfItemsPerRow));
         setActionBarTitle(loadSortBy());
         loadMovies(loadSortBy());
     }
