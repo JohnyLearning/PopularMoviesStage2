@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.ivanhadzhi.popularmovies.BuildConfig;
-import com.ivanhadzhi.popularmovies.model.Movie;
+import com.ivanhadzhi.popularmovies.network.data.Movie;
 import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
 

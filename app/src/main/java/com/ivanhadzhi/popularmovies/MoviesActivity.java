@@ -1,8 +1,11 @@
 package com.ivanhadzhi.popularmovies;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,9 +14,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.ivanhadzhi.popularmovies.model.Movie;
+import com.ivanhadzhi.popularmovies.MovieDetailActivity;
+import com.ivanhadzhi.popularmovies.MoviesAdapter;
+import com.ivanhadzhi.popularmovies.R;
+import com.ivanhadzhi.popularmovies.network.data.Movie;
 import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.network.MoviesListTask;
+import com.ivanhadzhi.popularmovies.viewmodel.MoviesViewModel;
 
 import java.util.List;
 
@@ -25,6 +32,7 @@ public class MoviesActivity extends AppCompatActivity {
 
     private MoviesAdapter moviesAdapter;
     private RecyclerView moviesContainer;
+    private MoviesViewModel moviesViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +41,7 @@ public class MoviesActivity extends AppCompatActivity {
         moviesContainer = findViewById(R.id.rv_movies);
         int numberOfItemsPerRow = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? 5 : 3;
         moviesContainer.setLayoutManager(new GridLayoutManager(this, numberOfItemsPerRow));
+        moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
         setActionBarTitle(loadSortBy());
         loadMovies(loadSortBy());
     }
@@ -41,7 +50,7 @@ public class MoviesActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (moviesAdapter != null && moviesAdapter.getItemCount() == 0) {
-            loadMovies(loadSortBy());
+            ;
         }
     }
 
@@ -70,11 +79,12 @@ public class MoviesActivity extends AppCompatActivity {
     }
 
     private void loadMovies(SortBy sortBy) {
-        MoviesListTask task = new MoviesListTask(movies -> {
-            setupUI(movies);
-        }, error -> {
-        }, sortBy);
-        task.execute();
+        moviesViewModel.getPopularMovies().observe(MoviesActivity.this, movies -> setupUI(movies));
+//        MoviesListTask task = new MoviesListTask(movies -> {
+//            setupUI(movies);
+//        }, error -> {
+//        }, sortBy);
+//        task.execute();
     }
 
     private void setActionBarTitle(SortBy sortBy) {

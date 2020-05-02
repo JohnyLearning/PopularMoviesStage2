@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ivanhadzhi.popularmovies.model.ImageSize;
-import com.ivanhadzhi.popularmovies.model.Movie;
+import com.ivanhadzhi.popularmovies.network.data.Movie;
 import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
