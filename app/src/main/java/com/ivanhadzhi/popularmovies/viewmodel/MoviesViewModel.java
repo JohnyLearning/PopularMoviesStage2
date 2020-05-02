@@ -18,13 +18,23 @@ import io.reactivex.schedulers.Schedulers;
 public class MoviesViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Movie>> popularMovies;
+    private MutableLiveData<List<Movie>> topRatedMovies;
     private MovieDbService movieDbService;
 
     public MoviesViewModel(@NonNull Application application) {
         super(application);
         movieDbService = new MovieDbService();
     }
-    public LiveData<List<Movie>> getPopularMovies() {
+
+    public LiveData<List<Movie>> getMovies(SortBy sortBy) {
+        if (sortBy == SortBy.TOP_RATED) {
+            return getTopRatedMovies();
+        } else {
+            return getPopularMovies();
+        }
+    }
+
+    private LiveData<List<Movie>> getPopularMovies() {
         if (popularMovies == null) {
             popularMovies = new MutableLiveData<>();
             fetchMovies(SortBy.POPULAR);
@@ -32,18 +42,36 @@ public class MoviesViewModel extends AndroidViewModel {
         return popularMovies;
     }
 
+    private LiveData<List<Movie>> getTopRatedMovies() {
+        if (topRatedMovies == null) {
+            topRatedMovies = new MutableLiveData<>();
+            fetchMovies(SortBy.TOP_RATED);
+        }
+        return topRatedMovies;
+    }
+
     private void fetchMovies(SortBy sortBy) {
-        movieDbService.getPopularMovieList()
+        movieDbService.getMovieList(sortBy)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     List<Movie> movies = response.getMovies();
-                    List<Movie> liveMovies = popularMovies.getValue();
-                    if (liveMovies == null || liveMovies.isEmpty()) {
-                        popularMovies.setValue(movies);
+                    if (sortBy == SortBy.TOP_RATED) {
+                        List<Movie> liveMovies = topRatedMovies.getValue();
+                        if (liveMovies == null || liveMovies.isEmpty()) {
+                            topRatedMovies.setValue(movies);
+                        } else {
+                            liveMovies.addAll(movies);
+                            topRatedMovies.setValue(liveMovies);
+                        }
                     } else {
-                        liveMovies.addAll(movies);
-                        popularMovies.setValue(liveMovies);
+                        List<Movie> liveMovies = popularMovies.getValue();
+                        if (liveMovies == null || liveMovies.isEmpty()) {
+                            popularMovies.setValue(movies);
+                        } else {
+                            liveMovies.addAll(movies);
+                            popularMovies.setValue(liveMovies);
+                        }
                     }
                 });
     }

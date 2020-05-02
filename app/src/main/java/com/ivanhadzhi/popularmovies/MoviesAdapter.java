@@ -28,10 +28,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         void execute(Movie movie);
     }
 
-    public MoviesAdapter(@NonNull Context context, @NonNull List<Movie> movies) {
+    public MoviesAdapter(@NonNull Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
+    }
+
+    public void addMovies(List<Movie> movies) {
         this.movies = movies;
+        notifyDataSetChanged();
     }
 
     @NonNull
