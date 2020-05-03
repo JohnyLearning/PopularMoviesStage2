@@ -1,19 +1,25 @@
 package com.ivanhadzhi.popularmovies;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ivanhadzhi.popularmovies.model.ImageSize;
 import com.ivanhadzhi.popularmovies.network.data.Movie;
+import com.ivanhadzhi.popularmovies.network.data.Trailer;
 import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
+import com.ivanhadzhi.popularmovies.viewmodel.MovieDetailViewModel;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
+
+import java.util.List;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -24,10 +30,14 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView synopsis;
     private TextView releaseDate;
 
+    private MovieDetailViewModel movieDetailViewModel;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
+        // TODO: refactor this method and split into a couple smaller private methods
+        movieDetailViewModel = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -47,6 +57,8 @@ public class MovieDetailActivity extends AppCompatActivity {
             DateTime dateTime = new DateTime(movie.getReleaseDate());
             releaseDate.setText(dateTime.toString("d MMM, yyyy"));
         }
+        movieDetailViewModel.getTrailers(movie.getMovieId()).observe(MovieDetailActivity.this, trailers -> {setupTrailers(trailers);});
+        movieDetailViewModel.getReviews(movie.getMovieId()).observe(MovieDetailActivity.this, reviews -> {});
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -56,6 +68,10 @@ public class MovieDetailActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupTrailers(List<Trailer> trailers) {
+        Log.d("RAG", String.valueOf(trailers.size()));
     }
 
 

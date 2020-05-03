@@ -12,8 +12,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.network.data.Movie;
+import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.viewmodel.MoviesViewModel;
 
 import java.util.List;
@@ -45,14 +45,6 @@ public class MoviesActivity extends AppCompatActivity {
         moviesContainer.setAdapter(moviesAdapter);
         setActionBarTitle(loadSortBy());
         loadMovies(loadSortBy());
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (moviesAdapter != null && moviesAdapter.getItemCount() == 0) {
-            ;
-        }
     }
 
     @Override
