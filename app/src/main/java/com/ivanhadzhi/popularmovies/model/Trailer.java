@@ -24,4 +24,8 @@ public class Trailer {
     @SerializedName("type")
     private TrailerType type;
 
+    public String getName() {
+        return name;
+    }
+
 }

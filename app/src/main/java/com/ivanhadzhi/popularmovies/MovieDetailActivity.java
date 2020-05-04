@@ -1,37 +1,27 @@
 package com.ivanhadzhi.popularmovies;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ivanhadzhi.popularmovies.databinding.ActivityMovieDetailBinding;
 import com.ivanhadzhi.popularmovies.model.ImageSize;
 import com.ivanhadzhi.popularmovies.model.Movie;
-import com.ivanhadzhi.popularmovies.model.Trailer;
 import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
 import com.ivanhadzhi.popularmovies.viewmodel.MovieDetailViewModel;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
 
-import java.util.List;
-
 public class MovieDetailActivity extends BaseActivity {
 
     public static final String MOVIE_BUNDLE_PARAM = "movie";
-    private TextView title;
-    private ImageView poster;
-    private TextView userRating;
-    private TextView synopsis;
-    private TextView releaseDate;
 
     private MovieDetailViewModel movieDetailViewModel;
 
@@ -49,8 +39,9 @@ public class MovieDetailActivity extends BaseActivity {
         }
         Movie movie = getIntent().getParcelableExtra(MOVIE_BUNDLE_PARAM);
         bindData(movie);
-        movieDetailViewModel.getTrailers(movie.getMovieId()).observe(MovieDetailActivity.this, trailers -> {setupTrailers(trailers);});
-        movieDetailViewModel.getReviews(movie.getMovieId()).observe(MovieDetailActivity.this, reviews -> {});
+        bindTrailers(movie);
+//        movieDetailViewModel.getTrailers(movie.getMovieId()).observe(MovieDetailActivity.this, trailers -> {setupTrailers(trailers);});
+//        movieDetailViewModel.getReviews(movie.getMovieId()).observe(MovieDetailActivity.this, reviews -> {});
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -73,8 +64,16 @@ public class MovieDetailActivity extends BaseActivity {
         }
     }
 
-    private void setupTrailers(List<Trailer> trailers) {
-        Log.d("RAG", String.valueOf(trailers.size()));
+    private void bindTrailers(Movie movie) {
+        RecyclerView trailersView = dataBinding.rvTrailers;
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        trailersView.setLayoutManager(layoutManager);
+        movieDetailViewModel.getTrailers(movie.getMovieId())
+                .observe(MovieDetailActivity.this, trailers -> {
+                    TrailerAdapter adapter = new TrailerAdapter(this);
+                    adapter.addTrailers(trailers);
+                    dataBinding.rvTrailers.setAdapter(adapter);
+                });
     }
 
 

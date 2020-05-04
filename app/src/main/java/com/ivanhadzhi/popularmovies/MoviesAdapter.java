@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +19,6 @@ import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
-    private LayoutInflater layoutInflater;
     private List<Movie> movies;
     private Context context;
     private MovieClickListener movieClickListener;
@@ -33,7 +30,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     public MoviesAdapter(@NonNull Context context) {
         this.context = context;
-        layoutInflater = LayoutInflater.from(context);
     }
 
     public void addMovies(List<Movie> movies) {
@@ -44,7 +40,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         MovieListItemBinding itemBinding = MovieListItemBinding.inflate(layoutInflater, parent, false);
         return new MovieViewHolder(itemBinding);
