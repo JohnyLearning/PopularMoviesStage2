@@ -1,22 +1,25 @@
 package com.ivanhadzhi.popularmovies;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.ivanhadzhi.popularmovies.databinding.MovieListItemBinding;
 import com.ivanhadzhi.popularmovies.model.ImageSize;
-import com.ivanhadzhi.popularmovies.network.data.Movie;
+import com.ivanhadzhi.popularmovies.model.Movie;
 import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
+public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
     private LayoutInflater layoutInflater;
     private List<Movie> movies;
@@ -40,24 +43,20 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.movie_list_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        MovieListItemBinding itemBinding = MovieListItemBinding.inflate(layoutInflater, parent, false);
+        return new MovieViewHolder(itemBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         if (movies != null && movies.size() > position && movies.get(position).getPosterPath() != null) {
             Movie movie = movies.get(position);
-            holder.movieTitle.setText(movie.getTitle());
-            Picasso.get()
-                    .load(NetworkUtils.getImageURL(ImageSize.w300, movie.getPosterPath()).toString())
-                    .placeholder(R.drawable.no_image)
-                    .error(R.drawable.no_image)
-                    .into(holder.moviePoster);
+            holder.bindItem(movie);
         } else {
-            holder.moviePoster.setImageResource(R.drawable.no_image);
+            holder.bindItem(null);
         }
     }
 
@@ -74,16 +73,27 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         this.movieClickListener = movieClickListener;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView moviePoster;
-        private TextView movieTitle;
+        private final MovieListItemBinding itemBinding;
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-            moviePoster = itemView.findViewById(R.id.movie_poster);
-            movieTitle = itemView.findViewById(R.id.movie_title);
-            itemView.setOnClickListener(this);
+        public MovieViewHolder(MovieListItemBinding binding) {
+            super(binding.getRoot());
+            itemBinding = binding;
+        }
+
+        public void bindItem(@Nullable Movie movie) {
+            if (movie != null) {
+                itemBinding.setMovie(movie);
+                Picasso.get()
+                        .load(NetworkUtils.getImageURL(ImageSize.w300, movie.getPosterPath()).toString())
+                        .placeholder(R.drawable.no_image)
+                        .error(R.drawable.no_image)
+                        .into(itemBinding.moviePoster);
+                itemView.setOnClickListener(this);
+            } else {
+                itemBinding.moviePoster.setImageResource(R.drawable.no_image);
+            }
         }
 
         @Override

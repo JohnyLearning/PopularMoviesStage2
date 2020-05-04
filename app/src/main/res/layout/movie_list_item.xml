@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="145dp"
-    android:layout_height="145dp"
-    android:paddingTop="6dp"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/movie_poster"
-        android:adjustViewBounds="true" />
+    <data>
+        <variable
+            name="movie"
+            type="com.ivanhadzhi.popularmovies.model.Movie"/>
+    </data>
 
-    <TextView
-        android:id="@+id/movie_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="movie title"
-        android:maxLines="1"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/movie_item_title"
-        android:gravity="center" />
+    <LinearLayout
+        android:layout_width="145dp"
+        android:layout_height="145dp"
+        android:paddingTop="6dp"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <ImageView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/movie_poster"
+            android:adjustViewBounds="true" />
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="movie title"
+            android:text="@{movie.title}"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/movie_item_title"
+            android:gravity="center" />
+
+    </LinearLayout>
+</layout>

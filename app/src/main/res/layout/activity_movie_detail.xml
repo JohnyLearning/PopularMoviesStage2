@@ -1,109 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black">
-
-    <LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="24dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp">
-
-        <TextView
-            android:id="@+id/movie_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/movie_title"
-            android:gravity="center"
-            android:textStyle="italic"
-            android:textColor="@color/white"
-            tools:text="Title" />
-
-        <ImageView
-            android:id="@+id/movie_poster"
-            android:layout_marginTop="24dp"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            tools:src="@drawable/watching_tv"
-            android:layout_gravity="center" />
+        android:background="@color/black">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="24dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
 
             <TextView
-                android:id="@+id/movie_user_rating_label"
+                android:id="@+id/movie_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/movie_title"
+                android:gravity="center"
+                android:textStyle="italic"
+                android:textColor="@color/white"
+                tools:text="Title" />
+
+            <ImageView
+                android:id="@+id/movie_poster"
+                android:layout_marginTop="24dp"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                tools:src="@drawable/watching_tv"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/movie_user_rating_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="@string/user_rating"
+                    android:textSize="@dimen/label_text_size"
+                    android:layout_weight="0.5"
+                    android:labelFor="@id/movie_user_rating"
+                    tools:text="User rating:"
+                    android:layout_marginTop="24dp"
+                    android:gravity="end" />
+
+                <TextView
+                    android:id="@+id/movie_user_rating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/label_text_size"
+                    android:layout_weight="0.5"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="6dp"
+                    tools:text="5.5" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/movie_release_date_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="@string/release_date"
+                    android:textSize="@dimen/label_text_size"
+                    android:layout_weight="0.5"
+                    android:labelFor="@id/movie_release_date"
+                    tools:text="Release date:"
+                    android:layout_marginTop="24dp"
+                    android:gravity="end" />
+
+                <TextView
+                    android:id="@+id/movie_release_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/label_text_size"
+                    android:layout_weight="0.5"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="6dp"
+                    tools:text="21/01/1975" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_trailers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior" />
+
+            <TextView
+                android:id="@+id/movie_synopsis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="@string/user_rating"
-                android:textSize="@dimen/label_text_size"
-                android:layout_weight="0.5"
-                android:labelFor="@id/movie_user_rating"
-                tools:text="User rating:"
-                android:layout_marginTop="24dp"
-                android:gravity="end" />
-
-            <TextView
-                android:id="@+id/movie_user_rating"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:textSize="@dimen/label_text_size"
                 android:layout_weight="0.5"
                 android:layout_marginTop="24dp"
-                android:layout_marginLeft="6dp"
-                tools:text="5.5" />
+                android:layout_marginLeft="6dp"/>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/movie_release_date_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="@string/release_date"
-                android:textSize="@dimen/label_text_size"
-                android:layout_weight="0.5"
-                android:labelFor="@id/movie_release_date"
-                tools:text="Release date:"
-                android:layout_marginTop="24dp"
-                android:gravity="end" />
-
-            <TextView
-                android:id="@+id/movie_release_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="@dimen/label_text_size"
-                android:layout_weight="0.5"
-                android:layout_marginTop="24dp"
-                android:layout_marginLeft="6dp"
-                tools:text="21/01/1975" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/movie_synopsis"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="@dimen/label_text_size"
-            android:layout_weight="0.5"
-            android:layout_marginTop="24dp"
-            android:layout_marginLeft="6dp"
-            tools:text="Jackdaws love my big sphinx of quartz. Pack my box with five dozen liquor jugs." />
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</layout>

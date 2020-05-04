@@ -1,4 +1,4 @@
-package com.ivanhadzhi.popularmovies.network.data;
+package com.ivanhadzhi.popularmovies.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

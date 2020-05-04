@@ -1,18 +1,19 @@
 package com.ivanhadzhi.popularmovies;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.ivanhadzhi.popularmovies.network.data.Movie;
+import androidx.appcompat.app.ActionBar;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.ivanhadzhi.popularmovies.databinding.ActivityMoviesBinding;
+import com.ivanhadzhi.popularmovies.model.Movie;
 import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.viewmodel.MoviesViewModel;
 
@@ -22,11 +23,13 @@ import static com.ivanhadzhi.popularmovies.MovieDetailActivity.MOVIE_BUNDLE_PARA
 import static com.ivanhadzhi.popularmovies.model.SortBy.POPULAR;
 import static com.ivanhadzhi.popularmovies.model.SortBy.TOP_RATED;
 
-public class MoviesActivity extends AppCompatActivity {
+    public class MoviesActivity extends BaseActivity {
 
     private MoviesAdapter moviesAdapter;
     private RecyclerView moviesContainer;
     private MoviesViewModel moviesViewModel;
+
+    private ActivityMoviesBinding dataBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

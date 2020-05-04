@@ -1,14 +1,15 @@
 package com.ivanhadzhi.popularmovies.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.ivanhadzhi.popularmovies.network.MovieDbService;
-import com.ivanhadzhi.popularmovies.network.data.Review;
-import com.ivanhadzhi.popularmovies.network.data.Trailer;
+import com.ivanhadzhi.popularmovies.model.Review;
+import com.ivanhadzhi.popularmovies.model.Trailer;
 
 import java.util.List;
 

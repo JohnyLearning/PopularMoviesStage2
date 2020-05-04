@@ -1,4 +1,4 @@
-package com.ivanhadzhi.popularmovies.network.data;
+package com.ivanhadzhi.popularmovies.model;
 
 import com.google.gson.annotations.SerializedName;
 import com.ivanhadzhi.popularmovies.model.TrailerSize;
