@@ -39,9 +39,8 @@ public class MovieDetailActivity extends BaseActivity {
         }
         Movie movie = getIntent().getParcelableExtra(MOVIE_BUNDLE_PARAM);
         bindData(movie);
-        bindTrailers(movie);
-//        movieDetailViewModel.getTrailers(movie.getMovieId()).observe(MovieDetailActivity.this, trailers -> {setupTrailers(trailers);});
-//        movieDetailViewModel.getReviews(movie.getMovieId()).observe(MovieDetailActivity.this, reviews -> {});
+        bindTrailers(movie.getMovieId());
+        bindReviews(movie.getMovieId());
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -64,15 +63,27 @@ public class MovieDetailActivity extends BaseActivity {
         }
     }
 
-    private void bindTrailers(Movie movie) {
+    private void bindTrailers(String movieId) {
         RecyclerView trailersView = dataBinding.rvTrailers;
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,  false);
         trailersView.setLayoutManager(layoutManager);
-        movieDetailViewModel.getTrailers(movie.getMovieId())
+        movieDetailViewModel.getTrailers(movieId)
                 .observe(MovieDetailActivity.this, trailers -> {
                     TrailerAdapter adapter = new TrailerAdapter(this);
                     adapter.addTrailers(trailers);
                     dataBinding.rvTrailers.setAdapter(adapter);
+                });
+    }
+
+    private void bindReviews(String movieId) {
+        RecyclerView reviewsView = dataBinding.rvReviews;
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,  false);
+        reviewsView.setLayoutManager(layoutManager);
+        movieDetailViewModel.getReviews(movieId)
+                .observe(MovieDetailActivity.this, reviews -> {
+                    ReviewAdapter adapter = new ReviewAdapter(this);
+                    adapter.addReviews(reviews);
+                    dataBinding.rvReviews.setAdapter(adapter);
                 });
     }
 

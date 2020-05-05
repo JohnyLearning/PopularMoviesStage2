@@ -57,7 +57,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
         void bind(Trailer trailer) {
             dataBinding.setTrailer(trailer);
-            String photoUrl = String.format("https://img.youtube.com/vi/%s/0.jpg", trailer.getName());
+            String photoUrl = String.format("https://img.youtube.com/vi/%s/0.jpg", trailer.getKey());
             Picasso.get()
                     .load(photoUrl)
                     .placeholder(R.drawable.no_image)

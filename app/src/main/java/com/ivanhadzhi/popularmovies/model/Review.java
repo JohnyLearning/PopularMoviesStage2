@@ -7,10 +7,10 @@ import com.ivanhadzhi.popularmovies.model.TrailerType;
 public class Review {
 
     @SerializedName("id")
-    private String trailerId;
+    private String id;
 
     @SerializedName("author")
-    private String key;
+    private String author;
 
     @SerializedName("content")
     private String content;
@@ -18,4 +18,15 @@ public class Review {
     @SerializedName("url")
     private String url;
 
+    public String getId() {
+        return id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
 }
