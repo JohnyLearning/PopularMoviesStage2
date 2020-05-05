@@ -3,8 +3,13 @@ package com.ivanhadzhi.popularmovies.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity
 public class Movie implements Parcelable {
 
     @SerializedName("original_title")
@@ -13,6 +18,8 @@ public class Movie implements Parcelable {
     @SerializedName("title")
     private String title;
 
+    @PrimaryKey
+    @NonNull
     @SerializedName("id")
     private String movieId;
 
