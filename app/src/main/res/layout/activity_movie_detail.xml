@@ -108,6 +108,7 @@
                 android:layout_marginLeft="6dp"/>
 
             <TextView
+                android:id="@+id/trailers_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.3"
@@ -118,6 +119,7 @@
                 android:textColor="@color/white"/>
 
             <View
+                android:id="@+id/trailers_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/white"
@@ -132,6 +134,7 @@
                 app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior" />
 
             <TextView
+                android:id="@+id/reviews_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.3"
@@ -142,6 +145,7 @@
                 android:textColor="@color/white"/>
 
             <View
+                android:id="@+id/rv_reviews_divider"
                 android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

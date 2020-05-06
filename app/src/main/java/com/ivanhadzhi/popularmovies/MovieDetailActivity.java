@@ -2,6 +2,7 @@ package com.ivanhadzhi.popularmovies;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -18,6 +19,8 @@ import com.ivanhadzhi.popularmovies.viewmodel.MovieDetailViewModel;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
+
+import static android.view.View.GONE;
 
 public class MovieDetailActivity extends BaseActivity {
 
@@ -69,10 +72,21 @@ public class MovieDetailActivity extends BaseActivity {
         trailersView.setLayoutManager(layoutManager);
         movieDetailViewModel.getTrailers(movieId)
                 .observe(MovieDetailActivity.this, trailers -> {
-                    TrailerAdapter adapter = new TrailerAdapter(this);
-                    adapter.addTrailers(trailers);
-                    dataBinding.rvTrailers.setAdapter(adapter);
+                    if (trailers != null && trailers.size() > 0) {
+                        TrailerAdapter adapter = new TrailerAdapter(this);
+                        adapter.addTrailers(trailers);
+                        dataBinding.rvTrailers.setAdapter(adapter);
+                        setTrailersVisibility(View.VISIBLE);
+                    } else {
+                        setTrailersVisibility(GONE);
+                    }
                 });
+    }
+
+    private void setTrailersVisibility(int visibility) {
+        dataBinding.trailersTitle.setVisibility(visibility);
+        dataBinding.trailersDivider.setVisibility(visibility);
+        dataBinding.rvTrailers.setVisibility(visibility);
     }
 
     private void bindReviews(String movieId) {
@@ -81,11 +95,21 @@ public class MovieDetailActivity extends BaseActivity {
         reviewsView.setLayoutManager(layoutManager);
         movieDetailViewModel.getReviews(movieId)
                 .observe(MovieDetailActivity.this, reviews -> {
-                    ReviewAdapter adapter = new ReviewAdapter(this);
-                    adapter.addReviews(reviews);
-                    dataBinding.rvReviews.setAdapter(adapter);
+                    if (reviews != null && reviews.size() > 0) {
+                        ReviewAdapter adapter = new ReviewAdapter(this);
+                        adapter.addReviews(reviews);
+                        dataBinding.rvReviews.setAdapter(adapter);
+                        setReviewsVisibility(View.VISIBLE);
+                    } else {
+                        setReviewsVisibility(GONE);
+                    }
                 });
     }
 
+    private void setReviewsVisibility(int visibility) {
+        dataBinding.reviewsTitle.setVisibility(visibility);
+        dataBinding.rvReviewsDivider.setVisibility(visibility);
+        dataBinding.rvReviews.setVisibility(visibility);
+    }
 
 }
