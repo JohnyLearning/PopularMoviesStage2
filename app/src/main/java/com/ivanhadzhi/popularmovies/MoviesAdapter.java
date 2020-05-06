@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.ivanhadzhi.popularmovies.data.MovieDao;
+import com.ivanhadzhi.popularmovies.data.MoviesDatabase;
 import com.ivanhadzhi.popularmovies.databinding.MovieListItemBinding;
 import com.ivanhadzhi.popularmovies.model.ImageSize;
 import com.ivanhadzhi.popularmovies.model.Movie;
@@ -22,6 +25,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     private List<Movie> movies;
     private Context context;
     private MovieClickListener movieClickListener;
+    private final MovieDao movieDao;
 
     @FunctionalInterface
     public interface MovieClickListener {
@@ -30,6 +34,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     public MoviesAdapter(@NonNull Context context) {
         this.context = context;
+        movieDao = MoviesDatabase.getInstance(context).movieDao();
     }
 
     public void addMovies(List<Movie> movies) {
@@ -71,6 +76,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final MovieListItemBinding itemBinding;
+        boolean favoriteFlag;
 
         public MovieViewHolder(MovieListItemBinding binding) {
             super(binding.getRoot());
@@ -86,8 +92,39 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                         .error(R.drawable.no_image)
                         .into(itemBinding.moviePoster);
                 itemView.setOnClickListener(this);
+                itemBinding.favoriteAction.setOnClickListener(view -> markFavorite(view));
+                Movie dbMovie = movieDao.fetchById(movie.getMovieId());
+                if (dbMovie != null) {
+                    favoriteFlag = true;
+                } else {
+                    favoriteFlag = false;
+                }
+                setImageActionDrawable(favoriteFlag);
             } else {
                 itemBinding.moviePoster.setImageResource(R.drawable.no_image);
+            }
+        }
+
+        private void markFavorite(View view) {
+            final Movie selectedMovie = movies.get(getAdapterPosition());
+            if (favoriteFlag) {
+                // the movie has been marked as favorite so we will remove it from the db
+                movieDao.delete(selectedMovie);
+            } else {
+                // mark as favorite, i.e. insert to db
+                movieDao.insert(selectedMovie);
+            }
+            favoriteFlag = !favoriteFlag;
+            setImageActionDrawable(favoriteFlag);
+            // TODO: move the string to resources
+            Snackbar.make(view, "Marking " + selectedMovie.getTitle() + " as favorite.", Snackbar.LENGTH_SHORT).show();
+        }
+
+        private void setImageActionDrawable(boolean markFavorite) {
+            if (markFavorite) {
+                itemBinding.favoriteAction.setImageResource(R.drawable.favorite_selected);
+            } else {
+                itemBinding.favoriteAction.setImageResource(R.drawable.favorite);
             }
         }
 

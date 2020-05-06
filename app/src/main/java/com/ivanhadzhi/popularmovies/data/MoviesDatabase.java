@@ -11,14 +11,18 @@ import com.ivanhadzhi.popularmovies.model.Movie;
 @Database(entities = {Movie.class}, version = 1)
 public abstract class MoviesDatabase extends RoomDatabase {
 
+    private static final String DB_NAME = "movies";
+
     private static MoviesDatabase instance;
 
-    public static MoviesDatabase getDatabase(Context context) {
+    public static MoviesDatabase getInstance(Context context) {
         if (instance == null) {
             synchronized (MoviesDatabase.class) {
                 if (instance == null) {
                     instance = Room.databaseBuilder(context,
-                            MoviesDatabase.class, "popularmovies")
+                            MoviesDatabase.class, DB_NAME)
+                            // TODO: remove before submitting
+                            .allowMainThreadQueries()
                             .build();
                 }
             }
