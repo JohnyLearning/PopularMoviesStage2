@@ -13,7 +13,7 @@ import java.util.List;
 
 @Dao
 public interface MovieDao {
-    @Query("SELECT * FROM movie")
+    @Query("SELECT * FROM movie ORDER BY releaseDate DESC")
     LiveData<List<Movie>> getAll();
 
     @Query("SELECT movieId FROM movie WHERE movieId = :id")

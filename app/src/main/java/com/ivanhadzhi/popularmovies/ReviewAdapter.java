@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.ivanhadzhi.popularmovies.databinding.MovieReviewItemBinding;
+import com.ivanhadzhi.popularmovies.databinding.ReviewDetailSheetBinding;
 import com.ivanhadzhi.popularmovies.model.Review;
 
 import java.util.List;
@@ -26,7 +28,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         MovieReviewItemBinding binding = MovieReviewItemBinding.inflate(layoutInflater, parent, false);
-        return new ReviewViewHolder(binding);
+        ReviewDetailSheetBinding sheetBinding = ReviewDetailSheetBinding.inflate(layoutInflater, parent, false);
+        return new ReviewViewHolder(binding, sheetBinding);
     }
 
     @Override
@@ -48,14 +51,23 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     public class ReviewViewHolder extends RecyclerView.ViewHolder {
 
         MovieReviewItemBinding dataBinding;
+        ReviewDetailSheetBinding sheetBinding;
+        BottomSheetDialog dialog;
 
-        ReviewViewHolder(MovieReviewItemBinding binding) {
+        ReviewViewHolder(MovieReviewItemBinding binding, ReviewDetailSheetBinding sheetBinding) {
             super(binding.getRoot());
             dataBinding = binding;
+            this.sheetBinding = sheetBinding;
+            dialog = new BottomSheetDialog(context);
+            dialog.setContentView(sheetBinding.getRoot());
         }
 
         void bind(Review review) {
             dataBinding.setReview(review);
+            sheetBinding.setReview(review);
+            dataBinding.reviewContainer.setOnClickListener(view -> {
+                dialog.show();
+            });
         }
 
     }

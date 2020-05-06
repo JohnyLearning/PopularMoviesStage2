@@ -8,6 +8,7 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/review_container"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
