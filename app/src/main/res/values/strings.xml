@@ -7,4 +7,5 @@
     <string name="release_date">Release date:</string>
     <string name="show_popular_movies">Most popular</string>
     <string name="show_top_rated_movies">Highest rated</string>
+    <string name="show_favorites">Show favorites</string>
 </resources>

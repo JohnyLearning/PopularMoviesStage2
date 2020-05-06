@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.ivanhadzhi.popularmovies.data.MovieDao;
+import com.ivanhadzhi.popularmovies.data.MoviesDatabase;
 import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.network.MovieDbService;
 import com.ivanhadzhi.popularmovies.model.Movie;
@@ -20,16 +22,28 @@ public class MoviesViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Movie>> popularMovies;
     private MutableLiveData<List<Movie>> topRatedMovies;
-    private MovieDbService movieDbService;
+    private LiveData<List<Movie>> favorites;
+
+    private final MovieDbService movieDbService;
+
+    private final MovieDao movieDao;
 
     public MoviesViewModel(@NonNull Application application) {
         super(application);
         movieDbService = new MovieDbService();
+        movieDao = MoviesDatabase.getInstance(application.getApplicationContext()).movieDao();
     }
 
     public LiveData<List<Movie>> getMovies(SortBy sortBy) {
-        if (sortBy == SortBy.TOP_RATED) {
-            return getTopRatedMovies();
+        if (sortBy != null) {
+            switch (sortBy) {
+                case TOP_RATED:
+                    return getTopRatedMovies();
+                case FAVORITES:
+                    return getFavorites();
+                default:
+                    return getPopularMovies();
+            }
         } else {
             return getPopularMovies();
         }
@@ -49,6 +63,14 @@ public class MoviesViewModel extends AndroidViewModel {
             fetchMovies(SortBy.TOP_RATED);
         }
         return topRatedMovies;
+    }
+
+    private LiveData<List<Movie>> getFavorites() {
+        if (favorites == null) {
+            favorites = new MutableLiveData<>();
+            favorites = movieDao.getAll();
+        }
+        return favorites;
     }
 
     private void fetchMovies(SortBy sortBy) {

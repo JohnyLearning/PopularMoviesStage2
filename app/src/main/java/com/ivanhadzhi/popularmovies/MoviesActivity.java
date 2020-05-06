@@ -21,6 +21,7 @@ import com.ivanhadzhi.popularmovies.viewmodel.MoviesViewModel;
 import java.util.List;
 
 import static com.ivanhadzhi.popularmovies.MovieDetailActivity.MOVIE_BUNDLE_PARAM;
+import static com.ivanhadzhi.popularmovies.model.SortBy.FAVORITES;
 import static com.ivanhadzhi.popularmovies.model.SortBy.POPULAR;
 import static com.ivanhadzhi.popularmovies.model.SortBy.TOP_RATED;
 
@@ -38,7 +39,7 @@ import static com.ivanhadzhi.popularmovies.model.SortBy.TOP_RATED;
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_movies);
         int numberOfItemsPerRow = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? 5 : 3;
         moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
-        moviesAdapter = new MoviesAdapter(this);
+        moviesAdapter = new MoviesAdapter(this, numberOfItemsPerRow);
         moviesAdapter.setClickListener(movie -> {
             Intent movieDetailIntent = new Intent(this, MovieDetailActivity.class);
             movieDetailIntent.putExtra(MOVIE_BUNDLE_PARAM, movie);
@@ -68,6 +69,10 @@ import static com.ivanhadzhi.popularmovies.model.SortBy.TOP_RATED;
                 loadMovies(TOP_RATED);
                 sortBy = TOP_RATED;
                 break;
+            case R.id.show_favorites:
+                loadMovies(FAVORITES);
+                sortBy = FAVORITES;
+                break;
         }
         setActionBarTitle(sortBy);
         saveSortBy(sortBy);
@@ -76,6 +81,10 @@ import static com.ivanhadzhi.popularmovies.model.SortBy.TOP_RATED;
 
     private void loadMovies(SortBy sortBy) {
         moviesViewModel.getMovies(sortBy).observe(MoviesActivity.this, movies -> setupUI(movies));
+    }
+
+    private void loadFavorites() {
+        moviesViewModel.getMovies(FAVORITES).observe(MoviesActivity.this, movies -> setupUI(movies));
     }
 
     private void setActionBarTitle(SortBy sortBy) {

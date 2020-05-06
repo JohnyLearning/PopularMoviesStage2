@@ -28,15 +28,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     private Context context;
     private MovieClickListener movieClickListener;
     private final MovieDao movieDao;
+    private int numberOfItemsPerRow;
 
     @FunctionalInterface
     public interface MovieClickListener {
         void execute(Movie movie);
     }
 
-    public MoviesAdapter(@NonNull Context context) {
+    public MoviesAdapter(@NonNull Context context, int numberOfItemsPerRow) {
         this.context = context;
         movieDao = MoviesDatabase.getInstance(context).movieDao();
+        this.numberOfItemsPerRow = numberOfItemsPerRow;
     }
 
     public void addMovies(List<Movie> movies) {
@@ -56,7 +58,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     private int calculateItemWidth() {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        return displaymetrics.widthPixels / 3 - 6;
+        return displaymetrics.widthPixels / numberOfItemsPerRow - 6;
     }
 
     @Override

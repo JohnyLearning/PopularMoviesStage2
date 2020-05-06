@@ -2,20 +2,17 @@ package com.ivanhadzhi.popularmovies.model;
 
 public enum SortBy {
     POPULAR("popular"),
-    TOP_RATED("top_rated");
+    TOP_RATED("top_rated"),
+    FAVORITES("favorites");
 
-    private String sortyByValue;
+    private String sortByValue;
 
-    private SortBy(String value) {
-        sortyByValue = value;
-    }
-
-    String getSortByValue() {
-        return sortyByValue;
+    SortBy(String value) {
+        sortByValue = value;
     }
 
     @Override
     public String toString() {
-        return sortyByValue;
+        return sortByValue;
     }
 }

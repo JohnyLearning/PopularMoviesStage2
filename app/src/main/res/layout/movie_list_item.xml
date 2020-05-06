@@ -31,7 +31,7 @@
             android:id="@+id/favorite_action"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:layout_constraintBottom_toBottomOf="@id/movie_poster"
+            app:layout_constraintTop_toTopOf="@id/movie_poster"
             app:layout_constraintEnd_toEndOf="@id/movie_poster"
             android:src="@drawable/favorite"/>
 
