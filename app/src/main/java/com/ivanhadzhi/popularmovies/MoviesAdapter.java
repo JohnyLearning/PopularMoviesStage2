@@ -1,6 +1,8 @@
 package com.ivanhadzhi.popularmovies;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +49,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         MovieListItemBinding itemBinding = MovieListItemBinding.inflate(layoutInflater, parent, false);
+        itemBinding.moviePoster.getLayoutParams().width = calculateItemWidth();
         return new MovieViewHolder(itemBinding);
+    }
+
+    private int calculateItemWidth() {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        return displaymetrics.widthPixels / 3 - 6;
     }
 
     @Override

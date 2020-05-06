@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,10 +35,8 @@ import static com.ivanhadzhi.popularmovies.model.SortBy.TOP_RATED;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movies);
-        moviesContainer = findViewById(R.id.rv_movies);
+        dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_movies);
         int numberOfItemsPerRow = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? 5 : 3;
-        moviesContainer.setLayoutManager(new GridLayoutManager(this, numberOfItemsPerRow));
         moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
         moviesAdapter = new MoviesAdapter(this);
         moviesAdapter.setClickListener(movie -> {
@@ -45,7 +44,8 @@ import static com.ivanhadzhi.popularmovies.model.SortBy.TOP_RATED;
             movieDetailIntent.putExtra(MOVIE_BUNDLE_PARAM, movie);
             startActivity(movieDetailIntent);
         });
-        moviesContainer.setAdapter(moviesAdapter);
+        dataBinding.rvMovies.setAdapter(moviesAdapter);
+        dataBinding.rvMovies.setLayoutManager(new GridLayoutManager(this, numberOfItemsPerRow));
         setActionBarTitle(loadSortBy());
         loadMovies(loadSortBy());
     }

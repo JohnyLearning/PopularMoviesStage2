@@ -10,9 +10,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="135dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="6dp">
+        android:paddingRight="6dp"
+        android:paddingBottom="12dp">
 
         <ImageView
             android:id="@+id/movie_poster"
@@ -20,7 +21,6 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingRight="6dp"
             android:adjustViewBounds="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
