@@ -1,6 +1,9 @@
 package com.ivanhadzhi.popularmovies;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -62,6 +65,23 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
                     .load(photoUrl)
                     .placeholder(R.drawable.no_image)
                     .into(dataBinding.trailerPoster);
+            dataBinding.trailerPoster.setOnClickListener(view -> {
+                watchYoutubeVideo(trailer.getKey());
+            });
+        }
+
+        /**
+         * reference: https://stackoverflow.com/questions/574195/android-youtube-app-play-video-intent
+         */
+        private void watchYoutubeVideo(String id){
+            Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+            Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://www.youtube.com/watch?v=" + id));
+            try {
+                context.startActivity(appIntent);
+            } catch (ActivityNotFoundException ex) {
+                context.startActivity(webIntent);
+            }
         }
 
     }
