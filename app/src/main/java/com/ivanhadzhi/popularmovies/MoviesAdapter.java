@@ -17,9 +17,11 @@ import com.ivanhadzhi.popularmovies.data.MoviesDatabase;
 import com.ivanhadzhi.popularmovies.databinding.MovieListItemBinding;
 import com.ivanhadzhi.popularmovies.model.ImageSize;
 import com.ivanhadzhi.popularmovies.model.Movie;
+import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
@@ -84,6 +86,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         this.movieClickListener = movieClickListener;
     }
 
+    public void clearMovies() {
+        if (movies == null) {
+            movies = new ArrayList<>();
+        } else {
+            int moviesCount = movies.size();
+            movies.clear();
+            notifyItemRangeRemoved(0, moviesCount);
+        }
+    }
+
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final MovieListItemBinding itemBinding;
@@ -117,7 +129,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         }
 
         private void markFavorite(View view) {
-            final Movie selectedMovie = movies.get(getAdapterPosition());
+            final int moviePosition = getAdapterPosition();
+            final Movie selectedMovie = movies.get(moviePosition);
             if (favoriteFlag) {
                 // the movie has been marked as favorite so we will remove it from the db
                 movieDao.delete(selectedMovie);
@@ -129,7 +142,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             }
             favoriteFlag = !favoriteFlag;
             setImageActionDrawable(favoriteFlag);
-
         }
 
         private void setImageActionDrawable(boolean markFavorite) {

@@ -19,7 +19,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// TODO: consider using ServiceGenerator
 public class MovieDbService {
 
     /**
@@ -72,12 +71,10 @@ public class MovieDbService {
     }
 
     public Single<TrailersListResponse> getTrailers(String movieId) {
-        // TODO: handle onError
         return movieDbApi.getTrailers(movieId);
     }
 
     public Single<ReviewsListResponse> getReviews(String movieId) {
-        // TODO: handle onError
         return movieDbApi.getReviews(movieId);
     }
 

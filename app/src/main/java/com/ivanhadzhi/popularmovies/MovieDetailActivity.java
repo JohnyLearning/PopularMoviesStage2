@@ -1,11 +1,14 @@
 package com.ivanhadzhi.popularmovies;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +25,7 @@ import org.joda.time.DateTime;
 
 import static android.view.View.GONE;
 
-public class MovieDetailActivity extends BaseActivity {
+public class MovieDetailActivity extends BaseActivity implements MovieDetailViewModel.OnError {
 
     public static final String MOVIE_BUNDLE_PARAM = "movie";
 
@@ -74,7 +77,7 @@ public class MovieDetailActivity extends BaseActivity {
         RecyclerView trailersView = dataBinding.rvTrailers;
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         trailersView.setLayoutManager(layoutManager);
-        movieDetailViewModel.getTrailers(movieId)
+        movieDetailViewModel.getTrailers(movieId, this)
                 .observe(MovieDetailActivity.this, trailers -> {
                     if (trailers != null && trailers.size() > 0) {
                         TrailerAdapter adapter = new TrailerAdapter(this);
@@ -97,7 +100,7 @@ public class MovieDetailActivity extends BaseActivity {
         RecyclerView reviewsView = dataBinding.rvReviews;
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         reviewsView.setLayoutManager(layoutManager);
-        movieDetailViewModel.getReviews(movieId)
+        movieDetailViewModel.getReviews(movieId, this)
                 .observe(MovieDetailActivity.this, reviews -> {
                     if (reviews != null && reviews.size() > 0) {
                         ReviewAdapter adapter = new ReviewAdapter(this);
@@ -116,4 +119,14 @@ public class MovieDetailActivity extends BaseActivity {
         dataBinding.rvReviews.setVisibility(visibility);
     }
 
+    @Override
+    public void error(Throwable throwable) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setMessage(getString(R.string.generic_error));
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok_button), (dialog, which) -> {
+            alertDialog.dismiss();
+        });
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+    }
 }

@@ -80,11 +80,12 @@ public class MoviesActivity extends BaseActivity {
     }
 
     private void loadMovies(SortBy sortBy) {
-        moviesViewModel.getMovies(sortBy).observe(MoviesActivity.this, movies -> setupUI(movies));
-    }
-
-    private void loadFavorites() {
-        moviesViewModel.getMovies(FAVORITES).observe(MoviesActivity.this, movies -> setupUI(movies));
+        moviesViewModel.getMovies(POPULAR).removeObservers(MoviesActivity.this);
+        moviesViewModel.getMovies(TOP_RATED).removeObservers(MoviesActivity.this);
+        moviesViewModel.getMovies(FAVORITES).removeObservers(MoviesActivity.this);
+        moviesViewModel.getMovies(sortBy).observe(MoviesActivity.this, movies -> {
+            setupUI(movies);
+        });
     }
 
     private void setActionBarTitle(SortBy sortBy) {
@@ -92,6 +93,8 @@ public class MoviesActivity extends BaseActivity {
         if (actionBar != null) {
             if (sortBy == TOP_RATED) {
                 actionBar.setTitle(R.string.top_rated_movies_title);
+            } else if (sortBy == FAVORITES) {
+                actionBar.setTitle(R.string.favorite_movies_title);
             } else {
                 actionBar.setTitle(R.string.popular_movies_title);
             }

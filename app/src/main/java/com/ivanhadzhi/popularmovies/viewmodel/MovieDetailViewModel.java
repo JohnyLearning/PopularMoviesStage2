@@ -18,6 +18,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MovieDetailViewModel extends AndroidViewModel {
 
+    @FunctionalInterface
+    public interface OnError {
+        void error(Throwable throwable);
+    }
+
     private MutableLiveData<List<Trailer>> trailers;
     private MutableLiveData<List<Review>> reviews;
 
@@ -28,23 +33,23 @@ public class MovieDetailViewModel extends AndroidViewModel {
         movieDbService = new MovieDbService();
     }
 
-    public LiveData<List<Trailer>> getTrailers(String movieId) {
+    public LiveData<List<Trailer>> getTrailers(String movieId, OnError onErrorCallback) {
         if (trailers == null) {
             trailers = new MutableLiveData<>();
-            fetchTrailers(movieId);
+            fetchTrailers(movieId, onErrorCallback);
         }
         return trailers;
     }
 
-    public LiveData<List<Review>> getReviews(String movieId) {
+    public LiveData<List<Review>> getReviews(String movieId, OnError onErrorCallback) {
         if (reviews == null) {
             reviews = new MutableLiveData<>();
-            fetchReviews(movieId);
+            fetchReviews(movieId, onErrorCallback);
         }
         return reviews;
     }
 
-    private void fetchTrailers(String movieId) {
+    private void fetchTrailers(String movieId, final OnError onErrorCallback) {
         movieDbService.getTrailers(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -57,10 +62,14 @@ public class MovieDetailViewModel extends AndroidViewModel {
                         liveTrailers.addAll(freshTrailers);
                         trailers.setValue(liveTrailers);
                     }
+                }, error -> {
+                    if (onErrorCallback != null) {
+                        onErrorCallback.error(error);
+                    }
                 });
     }
 
-    private void fetchReviews(String movieId) {
+    private void fetchReviews(String movieId, final OnError onErrorCallback) {
         movieDbService.getReviews(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -72,6 +81,10 @@ public class MovieDetailViewModel extends AndroidViewModel {
                     } else {
                         liveReviews.addAll(freshReviews);
                         reviews.setValue(liveReviews);
+                    }
+                }, error -> {
+                    if (onErrorCallback != null) {
+                        onErrorCallback.error(error);
                     }
                 });
     }

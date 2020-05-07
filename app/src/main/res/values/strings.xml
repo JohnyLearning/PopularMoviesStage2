@@ -2,6 +2,7 @@
     <string name="app_name">Infinite movies</string>
     <string name="popular_movies_title">Popular movies</string>
     <string name="top_rated_movies_title">Top rated movies</string>
+    <string name="favorite_movies_title">Favories</string>
     <string name="movie_details_title">Movie details</string>
     <string name="user_rating">User rating</string>
     <string name="release_date">Release date</string>
@@ -10,4 +11,6 @@
     <string name="show_favorites">Show favorites</string>
     <string name="mark_favorite">Added %1$s to favorites.</string>
     <string name="remove_favorite">Removed %1$s from favorites.</string>
+    <string name="generic_error">Something went wrong!</string>
+    <string name="ok_button">OK</string>
 </resources>

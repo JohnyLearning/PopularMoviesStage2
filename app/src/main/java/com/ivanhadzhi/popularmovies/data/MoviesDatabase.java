@@ -22,7 +22,6 @@ public abstract class MoviesDatabase extends RoomDatabase {
                     instance = Room.databaseBuilder(context,
                             MoviesDatabase.class, DB_NAME)
                             .allowMainThreadQueries()
-                            // TODO: remove before submitting
                             .build();
                 }
             }
