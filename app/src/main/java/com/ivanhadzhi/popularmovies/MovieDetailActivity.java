@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ivanhadzhi.popularmovies.data.MovieDao;
+import com.ivanhadzhi.popularmovies.data.MoviesDatabase;
 import com.ivanhadzhi.popularmovies.databinding.ActivityMovieDetailBinding;
 import com.ivanhadzhi.popularmovies.model.ImageSize;
 import com.ivanhadzhi.popularmovies.model.Movie;
@@ -19,6 +21,9 @@ import com.ivanhadzhi.popularmovies.viewmodel.MovieDetailViewModel;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static android.view.View.GONE;
 
@@ -30,6 +35,8 @@ public class MovieDetailActivity extends BaseActivity {
     private MovieDetailViewModel movieDetailViewModel;
 
     private ActivityMovieDetailBinding dataBinding;
+
+    private Executor executor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +52,7 @@ public class MovieDetailActivity extends BaseActivity {
         bindData(movie, getIntent().getBooleanExtra(FAVORITE_BUNDLE_PARAM, false));
         bindTrailers(movie.getMovieId());
         bindReviews(movie.getMovieId());
+        executor = Executors.newFixedThreadPool(2);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -64,15 +72,52 @@ public class MovieDetailActivity extends BaseActivity {
         dataBinding.movieTitle.setText(movie.getOriginalTitle());
         dataBinding.movieUserRating.setText(String.format("%.1f/%d", movie.getUserRating(), 10));
         dataBinding.movieSynopsis.setText(movie.getOverview());
-        if (favorite) {
-            dataBinding.favoriteImage.setVisibility(View.VISIBLE);
-        } else {
-            dataBinding.favoriteImage.setVisibility(GONE);
-        }
+        setFavoriteImage(favorite);
+        dataBinding.favoriteImage.setOnClickListener(view -> {
+            markFavorite(movie);
+        });
         if (movie.getReleaseDate() != null) {
             DateTime dateTime = new DateTime(movie.getReleaseDate());
             dataBinding.movieReleaseDate.setText(dateTime.toString("d MMM, yyyy"));
         }
+    }
+
+    private void setFavoriteImage(boolean favorite) {
+        if (favorite) {
+            dataBinding.favoriteImage.setImageResource(R.drawable.favorite_selected);
+        } else {
+            dataBinding.favoriteImage.setImageResource(R.drawable.favorite);
+        }
+    }
+
+    private void markFavorite(Movie movie) {
+        MovieDao dao = MoviesDatabase.getInstance(this).movieDao();
+        boolean favorite = getFavorite();
+        if (favorite) {
+            executor.execute(() -> {
+                dao.delete(movie);
+            });
+        } else {
+            executor.execute(() -> {
+                dao.insert(movie);
+            });
+        }
+        updateFavorite(!favorite);
+        setFavoriteImage(!favorite);
+    }
+
+    private void updateFavorite(boolean favorite) {
+        if (getIntent() != null) {
+            getIntent().putExtra(FAVORITE_BUNDLE_PARAM, favorite);
+        }
+    }
+
+    private boolean getFavorite() {
+        boolean favorite = false;
+        if (getIntent() != null) {
+            favorite = getIntent().getBooleanExtra(FAVORITE_BUNDLE_PARAM, false);
+        }
+        return favorite;
     }
 
     private void bindTrailers(String movieId) {

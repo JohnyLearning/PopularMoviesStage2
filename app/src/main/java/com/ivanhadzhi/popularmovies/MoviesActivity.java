@@ -50,6 +50,11 @@ public class MoviesActivity extends BaseActivity {
         dataBinding.rvMovies.setAdapter(moviesAdapter);
         dataBinding.rvMovies.setLayoutManager(new GridLayoutManager(this, numberOfItemsPerRow));
         setActionBarTitle(loadSortBy());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         loadMovies(loadSortBy(), this);
     }
 
