@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -17,12 +18,12 @@ import com.ivanhadzhi.popularmovies.data.MoviesDatabase;
 import com.ivanhadzhi.popularmovies.databinding.MovieListItemBinding;
 import com.ivanhadzhi.popularmovies.model.ImageSize;
 import com.ivanhadzhi.popularmovies.model.Movie;
-import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
@@ -31,6 +32,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     private MovieClickListener movieClickListener;
     private final MovieDao movieDao;
     private int numberOfItemsPerRow;
+
+    private final Executor executor;
 
     @FunctionalInterface
     public interface MovieClickListener {
@@ -41,6 +44,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         this.context = context;
         movieDao = MoviesDatabase.getInstance(context).movieDao();
         this.numberOfItemsPerRow = numberOfItemsPerRow;
+        executor = Executors.newFixedThreadPool(2);
     }
 
     public void addMovies(List<Movie> movies) {
@@ -86,16 +90,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         this.movieClickListener = movieClickListener;
     }
 
-    public void clearMovies() {
-        if (movies == null) {
-            movies = new ArrayList<>();
-        } else {
-            int moviesCount = movies.size();
-            movies.clear();
-            notifyItemRangeRemoved(0, moviesCount);
-        }
-    }
-
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final MovieListItemBinding itemBinding;
@@ -116,13 +110,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                         .into(itemBinding.moviePoster);
                 itemView.setOnClickListener(this);
                 itemBinding.favoriteAction.setOnClickListener(view -> markFavorite(view));
-                Movie dbMovie = movieDao.fetchById(movie.getMovieId());
-                if (dbMovie != null) {
-                    favoriteFlag = true;
-                } else {
-                    favoriteFlag = false;
-                }
-                setImageActionDrawable(favoriteFlag);
+                executor.execute(() -> {
+                    Movie dbMovie = movieDao.fetchById(movie.getMovieId());
+                    if (dbMovie != null) {
+                        favoriteFlag = true;
+                    } else {
+                        favoriteFlag = false;
+                    }
+                    setImageActionDrawable(favoriteFlag);
+                });
             } else {
                 itemBinding.moviePoster.setImageResource(R.drawable.no_image);
             }
@@ -133,15 +129,24 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             final Movie selectedMovie = movies.get(moviePosition);
             if (favoriteFlag) {
                 // the movie has been marked as favorite so we will remove it from the db
-                movieDao.delete(selectedMovie);
-                Snackbar.make(view, context.getString(R.string.remove_favorite, selectedMovie.getTitle()), Snackbar.LENGTH_SHORT).show();
+                executor.execute(() -> {
+                    movieDao.delete(selectedMovie);
+                    showSuccessFavorite(view, selectedMovie, R.string.remove_favorite);
+                });
             } else {
                 // mark as favorite, i.e. insert to db
-                movieDao.insert(selectedMovie);
-                Snackbar.make(view, context.getString(R.string.mark_favorite, selectedMovie.getTitle()), Snackbar.LENGTH_SHORT).show();
+                executor.execute(() -> {
+                    movieDao.insert(selectedMovie);
+                    showSuccessFavorite(view, selectedMovie, R.string.mark_favorite);
+                });
             }
+        }
+
+        private void showSuccessFavorite(View view, Movie movie, @StringRes int message) {
+            Snackbar.make(view, context.getString(R.string.mark_favorite, movie.getTitle()), Snackbar.LENGTH_SHORT).show();
             favoriteFlag = !favoriteFlag;
             setImageActionDrawable(favoriteFlag);
+
         }
 
         private void setImageActionDrawable(boolean markFavorite) {

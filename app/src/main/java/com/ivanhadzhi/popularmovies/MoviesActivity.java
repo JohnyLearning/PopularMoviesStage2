@@ -19,6 +19,9 @@ import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.viewmodel.MoviesViewModel;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Completable;
 
 import static com.ivanhadzhi.popularmovies.MovieDetailActivity.MOVIE_BUNDLE_PARAM;
 import static com.ivanhadzhi.popularmovies.model.SortBy.FAVORITES;
