@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.ivanhadzhi.popularmovies.data.MovieDao;
 import com.ivanhadzhi.popularmovies.data.MoviesDatabase;
 import com.ivanhadzhi.popularmovies.model.Movie;
+import com.ivanhadzhi.popularmovies.model.OnError;
 import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.network.MovieDbService;
 
@@ -34,33 +35,33 @@ public class MoviesViewModel extends AndroidViewModel {
         movieDao = MoviesDatabase.getInstance(application.getApplicationContext()).movieDao();
     }
 
-    public LiveData<List<Movie>> getMovies(SortBy sortBy) {
+    public LiveData<List<Movie>> getMovies(SortBy sortBy, OnError onError) {
         if (sortBy != null) {
             switch (sortBy) {
                 case TOP_RATED:
-                    return getTopRatedMovies();
+                    return getTopRatedMovies(onError);
                 case FAVORITES:
                     return getFavorites();
                 default:
-                    return getPopularMovies();
+                    return getPopularMovies(onError);
             }
         } else {
-            return getPopularMovies();
+            return getPopularMovies(onError);
         }
     }
 
-    private LiveData<List<Movie>> getPopularMovies() {
+    private LiveData<List<Movie>> getPopularMovies(OnError onError) {
         if (popularMovies == null) {
             popularMovies = new MutableLiveData<>();
-            fetchMovies(SortBy.POPULAR);
+            fetchMovies(SortBy.POPULAR, onError);
         }
         return popularMovies;
     }
 
-    private LiveData<List<Movie>> getTopRatedMovies() {
+    private LiveData<List<Movie>> getTopRatedMovies(OnError onError) {
         if (topRatedMovies == null) {
             topRatedMovies = new MutableLiveData<>();
-            fetchMovies(SortBy.TOP_RATED);
+            fetchMovies(SortBy.TOP_RATED, onError);
         }
         return topRatedMovies;
     }
@@ -73,7 +74,7 @@ public class MoviesViewModel extends AndroidViewModel {
         return favorites;
     }
 
-    private void fetchMovies(SortBy sortBy) {
+    private void fetchMovies(SortBy sortBy, OnError errorCallback) {
         movieDbService.getMovieList(sortBy)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -95,6 +96,10 @@ public class MoviesViewModel extends AndroidViewModel {
                             liveMovies.addAll(movies);
                             popularMovies.setValue(liveMovies);
                         }
+                    }
+                }, error -> {
+                    if (errorCallback != null) {
+                        errorCallback.error(error);
                     }
                 });
     }

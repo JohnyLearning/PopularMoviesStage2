@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.ivanhadzhi.popularmovies.model.OnError;
 import com.ivanhadzhi.popularmovies.model.Review;
 import com.ivanhadzhi.popularmovies.model.Trailer;
 import com.ivanhadzhi.popularmovies.network.MovieDbService;
@@ -17,11 +18,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class MovieDetailViewModel extends AndroidViewModel {
-
-    @FunctionalInterface
-    public interface OnError {
-        void error(Throwable throwable);
-    }
 
     private MutableLiveData<List<Trailer>> trailers;
     private MutableLiveData<List<Review>> reviews;

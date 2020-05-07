@@ -1,14 +1,11 @@
 package com.ivanhadzhi.popularmovies;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,9 +22,10 @@ import org.joda.time.DateTime;
 
 import static android.view.View.GONE;
 
-public class MovieDetailActivity extends BaseActivity implements MovieDetailViewModel.OnError {
+public class MovieDetailActivity extends BaseActivity {
 
     public static final String MOVIE_BUNDLE_PARAM = "movie";
+    public static final String FAVORITE_BUNDLE_PARAM = "favorite";
 
     private MovieDetailViewModel movieDetailViewModel;
 
@@ -44,7 +42,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             actionBar.setTitle(R.string.movie_details_title);
         }
         Movie movie = getIntent().getParcelableExtra(MOVIE_BUNDLE_PARAM);
-        bindData(movie);
+        bindData(movie, getIntent().getBooleanExtra(FAVORITE_BUNDLE_PARAM, false));
         bindTrailers(movie.getMovieId());
         bindReviews(movie.getMovieId());
     }
@@ -58,7 +56,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         return super.onOptionsItemSelected(item);
     }
 
-    private void bindData(Movie movie) {
+    private void bindData(Movie movie, boolean favorite) {
         Picasso.get()
                 .load(NetworkUtils.getImageURL(ImageSize.w500, movie.getPosterPath()).toString())
                 .placeholder(R.drawable.no_image)
@@ -67,6 +65,11 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         dataBinding.movieTitle.setText(movie.getOriginalTitle());
         dataBinding.movieUserRating.setText(String.format("%.1f/%d", movie.getUserRating(), 10));
         dataBinding.movieSynopsis.setText(movie.getOverview());
+        if (favorite) {
+            dataBinding.favoriteImage.setVisibility(View.VISIBLE);
+        } else {
+            dataBinding.favoriteImage.setVisibility(GONE);
+        }
         if (movie.getReleaseDate() != null) {
             DateTime dateTime = new DateTime(movie.getReleaseDate());
             dataBinding.movieReleaseDate.setText(dateTime.toString("d MMM, yyyy"));
@@ -119,14 +122,4 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         dataBinding.rvReviews.setVisibility(visibility);
     }
 
-    @Override
-    public void error(Throwable throwable) {
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setMessage(getString(R.string.generic_error));
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok_button), (dialog, which) -> {
-            alertDialog.dismiss();
-        });
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
-    }
 }

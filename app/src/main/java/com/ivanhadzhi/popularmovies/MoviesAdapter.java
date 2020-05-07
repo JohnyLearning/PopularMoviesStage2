@@ -37,14 +37,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     @FunctionalInterface
     public interface MovieClickListener {
-        void execute(Movie movie);
+        void execute(Movie movie, boolean favoriteFlag);
     }
 
     public MoviesAdapter(@NonNull Context context, int numberOfItemsPerRow) {
         this.context = context;
         movieDao = MoviesDatabase.getInstance(context).movieDao();
         this.numberOfItemsPerRow = numberOfItemsPerRow;
-        executor = Executors.newFixedThreadPool(2);
+        executor = Executors.newFixedThreadPool(3);
     }
 
     public void addMovies(List<Movie> movies) {
@@ -164,7 +164,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         public void onItemClick(View view, int position) {
             if (movieClickListener != null && movies != null && movies.size() > position) {
-                movieClickListener.execute(movies.get(position));
+                movieClickListener.execute(movies.get(position), favoriteFlag);
             }
         }
     }

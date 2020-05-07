@@ -11,18 +11,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.ivanhadzhi.popularmovies.databinding.ActivityMoviesBinding;
 import com.ivanhadzhi.popularmovies.model.Movie;
+import com.ivanhadzhi.popularmovies.model.OnError;
 import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.viewmodel.MoviesViewModel;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
-import io.reactivex.Completable;
-
+import static com.ivanhadzhi.popularmovies.MovieDetailActivity.FAVORITE_BUNDLE_PARAM;
 import static com.ivanhadzhi.popularmovies.MovieDetailActivity.MOVIE_BUNDLE_PARAM;
 import static com.ivanhadzhi.popularmovies.model.SortBy.FAVORITES;
 import static com.ivanhadzhi.popularmovies.model.SortBy.POPULAR;
@@ -31,7 +29,6 @@ import static com.ivanhadzhi.popularmovies.model.SortBy.TOP_RATED;
 public class MoviesActivity extends BaseActivity {
 
     private MoviesAdapter moviesAdapter;
-    private RecyclerView moviesContainer;
     private MoviesViewModel moviesViewModel;
 
     private ActivityMoviesBinding dataBinding;
@@ -43,15 +40,16 @@ public class MoviesActivity extends BaseActivity {
         int numberOfItemsPerRow = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? 5 : 3;
         moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
         moviesAdapter = new MoviesAdapter(this, numberOfItemsPerRow);
-        moviesAdapter.setClickListener(movie -> {
+        moviesAdapter.setClickListener((movie, favorite) -> {
             Intent movieDetailIntent = new Intent(this, MovieDetailActivity.class);
             movieDetailIntent.putExtra(MOVIE_BUNDLE_PARAM, movie);
+            movieDetailIntent.putExtra(FAVORITE_BUNDLE_PARAM, favorite);
             startActivity(movieDetailIntent);
         });
         dataBinding.rvMovies.setAdapter(moviesAdapter);
         dataBinding.rvMovies.setLayoutManager(new GridLayoutManager(this, numberOfItemsPerRow));
         setActionBarTitle(loadSortBy());
-        loadMovies(loadSortBy());
+        loadMovies(loadSortBy(), this);
     }
 
     @Override
@@ -66,14 +64,14 @@ public class MoviesActivity extends BaseActivity {
         SortBy sortBy = POPULAR;
         switch (item.getItemId()) {
             case R.id.sort_by_popular:
-                loadMovies(POPULAR);
+                loadMovies(POPULAR, this);
                 break;
             case R.id.sort_by_top_rated:
-                loadMovies(TOP_RATED);
+                loadMovies(TOP_RATED, this);
                 sortBy = TOP_RATED;
                 break;
             case R.id.show_favorites:
-                loadMovies(FAVORITES);
+                loadMovies(FAVORITES, this);
                 sortBy = FAVORITES;
                 break;
         }
@@ -82,11 +80,11 @@ public class MoviesActivity extends BaseActivity {
         return true;
     }
 
-    private void loadMovies(SortBy sortBy) {
-        moviesViewModel.getMovies(POPULAR).removeObservers(MoviesActivity.this);
-        moviesViewModel.getMovies(TOP_RATED).removeObservers(MoviesActivity.this);
-        moviesViewModel.getMovies(FAVORITES).removeObservers(MoviesActivity.this);
-        moviesViewModel.getMovies(sortBy).observe(MoviesActivity.this, movies -> {
+    private void loadMovies(SortBy sortBy, OnError onError) {
+        moviesViewModel.getMovies(POPULAR, onError).removeObservers(MoviesActivity.this);
+        moviesViewModel.getMovies(TOP_RATED, onError).removeObservers(MoviesActivity.this);
+        moviesViewModel.getMovies(FAVORITES, onError).removeObservers(MoviesActivity.this);
+        moviesViewModel.getMovies(sortBy, onError).observe(MoviesActivity.this, movies -> {
             setupUI(movies);
         });
     }
