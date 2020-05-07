@@ -1,8 +1,6 @@
 package com.ivanhadzhi.popularmovies.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.ivanhadzhi.popularmovies.model.TrailerSize;
-import com.ivanhadzhi.popularmovies.model.TrailerType;
 
 public class Trailer {
 

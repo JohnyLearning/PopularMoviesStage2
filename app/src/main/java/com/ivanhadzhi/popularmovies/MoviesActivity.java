@@ -25,7 +25,7 @@ import static com.ivanhadzhi.popularmovies.model.SortBy.FAVORITES;
 import static com.ivanhadzhi.popularmovies.model.SortBy.POPULAR;
 import static com.ivanhadzhi.popularmovies.model.SortBy.TOP_RATED;
 
-    public class MoviesActivity extends BaseActivity {
+public class MoviesActivity extends BaseActivity {
 
     private MoviesAdapter moviesAdapter;
     private RecyclerView moviesContainer;

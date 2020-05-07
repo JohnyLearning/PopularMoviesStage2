@@ -73,7 +73,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         /**
          * reference: https://stackoverflow.com/questions/574195/android-youtube-app-play-video-intent
          */
-        private void watchYoutubeVideo(String id){
+        private void watchYoutubeVideo(String id) {
             Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
             Intent webIntent = new Intent(Intent.ACTION_VIEW,
                     Uri.parse("http://www.youtube.com/watch?v=" + id));

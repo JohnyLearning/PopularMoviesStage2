@@ -7,9 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.ivanhadzhi.popularmovies.network.MovieDbService;
 import com.ivanhadzhi.popularmovies.model.Review;
 import com.ivanhadzhi.popularmovies.model.Trailer;
+import com.ivanhadzhi.popularmovies.network.MovieDbService;
 
 import java.util.List;
 

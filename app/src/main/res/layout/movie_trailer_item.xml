@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="trailer"
             type="com.ivanhadzhi.popularmovies.model.Trailer" />
@@ -17,7 +18,7 @@
             android:id="@+id/trailer_poster"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/trailer_name"
@@ -27,7 +28,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:textColor="@color/white"
-            android:text="@{trailer.name}"/>
+            android:text="@{trailer.name}" />
 
     </LinearLayout>
 

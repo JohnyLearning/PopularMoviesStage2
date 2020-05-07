@@ -28,7 +28,8 @@ import java.net.URL;
  */
 public final class NetworkUtils {
 
-    private NetworkUtils() {}
+    private NetworkUtils() {
+    }
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 

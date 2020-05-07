@@ -1,9 +1,9 @@
 package com.ivanhadzhi.popularmovies.network;
 
 import com.ivanhadzhi.popularmovies.BuildConfig;
-import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.model.MoviesListResponse;
 import com.ivanhadzhi.popularmovies.model.ReviewsListResponse;
+import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.model.TrailersListResponse;
 
 import java.io.IOException;
@@ -59,7 +59,8 @@ public class MovieDbService {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
-        this.movieDbApi = retrofit.create(MovieDbApi.class);;
+        this.movieDbApi = retrofit.create(MovieDbApi.class);
+        ;
     }
 
     public Single<MoviesListResponse> getMovieList(SortBy sortBy) {

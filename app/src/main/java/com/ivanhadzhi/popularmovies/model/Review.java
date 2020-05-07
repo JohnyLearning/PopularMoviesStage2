@@ -4,8 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-import com.ivanhadzhi.popularmovies.model.TrailerSize;
-import com.ivanhadzhi.popularmovies.model.TrailerType;
 
 public class Review implements Parcelable {
 

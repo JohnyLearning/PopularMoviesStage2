@@ -8,6 +8,6 @@
         android:title="@string/show_top_rated_movies" />
     <item
         android:id="@+id/show_favorites"
-        android:title="@string/show_favorites"/>
+        android:title="@string/show_favorites" />
 
 </menu>

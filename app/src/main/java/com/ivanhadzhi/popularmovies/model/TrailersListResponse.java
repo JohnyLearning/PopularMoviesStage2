@@ -6,7 +6,8 @@ import java.util.List;
 
 public class TrailersListResponse {
 
-    @SerializedName("results") private List<Trailer> trailers;
+    @SerializedName("results")
+    private List<Trailer> trailers;
 
     public TrailersListResponse(List<Trailer> trailers) {
         this.trailers = trailers;

@@ -4,9 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="movie"
-            type="com.ivanhadzhi.popularmovies.model.Movie"/>
+            type="com.ivanhadzhi.popularmovies.model.Movie" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,8 +16,7 @@
         android:paddingRight="6dp"
         android:paddingBottom="12dp">
 
-        <ImageView
-            android:id="@+id/movie_poster"
+        <ImageView android:id="@+id/movie_poster"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
             android:layout_width="0dp"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/movie_title"/>
+            app:layout_constraintBottom_toTopOf="@+id/movie_title" />
 
         <ImageView
             android:id="@+id/favorite_action"
@@ -33,7 +33,7 @@
             android:layout_height="48dp"
             app:layout_constraintTop_toTopOf="@id/movie_poster"
             app:layout_constraintEnd_toEndOf="@id/movie_poster"
-            android:src="@drawable/favorite"/>
+            android:src="@drawable/favorite" />
 
         <TextView
             android:id="@+id/movie_title"
@@ -48,7 +48,7 @@
             app:layout_constraintTop_toBottomOf="@id/movie_poster"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

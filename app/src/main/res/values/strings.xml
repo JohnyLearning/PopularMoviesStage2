@@ -8,4 +8,6 @@
     <string name="show_popular_movies">Most popular</string>
     <string name="show_top_rated_movies">Highest rated</string>
     <string name="show_favorites">Show favorites</string>
+    <string name="mark_favorite">Added %1$s to favorites.</string>
+    <string name="remove_favorite">Removed %1$s from favorites.</string>
 </resources>

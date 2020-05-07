@@ -1,7 +1,6 @@
 package com.ivanhadzhi.popularmovies;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -17,7 +16,6 @@ import com.ivanhadzhi.popularmovies.model.ImageSize;
 import com.ivanhadzhi.popularmovies.model.Movie;
 import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
 import com.ivanhadzhi.popularmovies.viewmodel.MovieDetailViewModel;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
@@ -74,7 +72,7 @@ public class MovieDetailActivity extends BaseActivity {
 
     private void bindTrailers(String movieId) {
         RecyclerView trailersView = dataBinding.rvTrailers;
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,  false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         trailersView.setLayoutManager(layoutManager);
         movieDetailViewModel.getTrailers(movieId)
                 .observe(MovieDetailActivity.this, trailers -> {
@@ -97,7 +95,7 @@ public class MovieDetailActivity extends BaseActivity {
 
     private void bindReviews(String movieId) {
         RecyclerView reviewsView = dataBinding.rvReviews;
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,  false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         reviewsView.setLayoutManager(layoutManager);
         movieDetailViewModel.getReviews(movieId)
                 .observe(MovieDetailActivity.this, reviews -> {

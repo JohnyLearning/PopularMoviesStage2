@@ -121,14 +121,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             if (favoriteFlag) {
                 // the movie has been marked as favorite so we will remove it from the db
                 movieDao.delete(selectedMovie);
+                Snackbar.make(view, context.getString(R.string.remove_favorite, selectedMovie.getTitle()), Snackbar.LENGTH_SHORT).show();
             } else {
                 // mark as favorite, i.e. insert to db
                 movieDao.insert(selectedMovie);
+                Snackbar.make(view, context.getString(R.string.mark_favorite, selectedMovie.getTitle()), Snackbar.LENGTH_SHORT).show();
             }
             favoriteFlag = !favoriteFlag;
             setImageActionDrawable(favoriteFlag);
-            // TODO: move the string to resources
-            Snackbar.make(view, "Marking " + selectedMovie.getTitle() + " as favorite.", Snackbar.LENGTH_SHORT).show();
+
         }
 
         private void setImageActionDrawable(boolean markFavorite) {

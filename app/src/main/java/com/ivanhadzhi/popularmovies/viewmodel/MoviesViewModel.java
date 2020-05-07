@@ -9,9 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.ivanhadzhi.popularmovies.data.MovieDao;
 import com.ivanhadzhi.popularmovies.data.MoviesDatabase;
+import com.ivanhadzhi.popularmovies.model.Movie;
 import com.ivanhadzhi.popularmovies.model.SortBy;
 import com.ivanhadzhi.popularmovies.network.MovieDbService;
-import com.ivanhadzhi.popularmovies.model.Movie;
 
 import java.util.List;
 
