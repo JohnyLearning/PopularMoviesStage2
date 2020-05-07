@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.databinding.DataBindingUtil;
@@ -80,16 +81,23 @@ public class MoviesActivity extends BaseActivity {
         return true;
     }
 
-    private void loadMovies(SortBy sortBy, OnError onError) {
+    private void loadMovies(final SortBy sortBy, final OnError onError) {
         moviesViewModel.getMovies(POPULAR, onError).removeObservers(MoviesActivity.this);
         moviesViewModel.getMovies(TOP_RATED, onError).removeObservers(MoviesActivity.this);
         moviesViewModel.getMovies(FAVORITES, onError).removeObservers(MoviesActivity.this);
         moviesViewModel.getMovies(sortBy, onError).observe(MoviesActivity.this, movies -> {
-            setupUI(movies);
+            if (sortBy == FAVORITES && movies == null || movies.size() == 0) {
+                dataBinding.rvMovies.setVisibility(View.GONE);
+                dataBinding.noFavoritesFound.setVisibility(View.VISIBLE);
+            } else {
+                dataBinding.rvMovies.setVisibility(View.VISIBLE);
+                dataBinding.noFavoritesFound.setVisibility(View.GONE);
+                setupUI(movies);
+            }
         });
     }
 
-    private void setActionBarTitle(SortBy sortBy) {
+    private void setActionBarTitle(final SortBy sortBy) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             if (sortBy == TOP_RATED) {
@@ -106,7 +114,7 @@ public class MoviesActivity extends BaseActivity {
         moviesAdapter.addMovies(movies);
     }
 
-    private void saveSortBy(SortBy sortBy) {
+    private void saveSortBy(final SortBy sortBy) {
         if (getIntent() != null) {
             getIntent().putExtra("sortBy", sortBy.ordinal());
         }

@@ -143,7 +143,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         }
 
         private void showSuccessFavorite(View view, Movie movie, @StringRes int message) {
-            Snackbar.make(view, context.getString(R.string.mark_favorite, movie.getTitle()), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(view, context.getString(message, movie.getTitle()), Snackbar.LENGTH_SHORT).show();
             favoriteFlag = !favoriteFlag;
             setImageActionDrawable(favoriteFlag);
 

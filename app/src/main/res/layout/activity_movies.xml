@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -10,7 +12,20 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_movies"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/no_favorites_found"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLines="4"
+            android:padding="24dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/movie_title"
+            android:text="No favorites found. Mark more favorite movies from the Popular or Top rated lists."
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:visibility="gone"/>
 
     </FrameLayout>
 
