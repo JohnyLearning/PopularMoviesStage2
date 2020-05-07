@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
+class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
     private List<Movie> movies;
     private Context context;
@@ -90,7 +90,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         this.movieClickListener = movieClickListener;
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final MovieListItemBinding itemBinding;
         boolean favoriteFlag;
@@ -112,11 +112,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                 itemBinding.favoriteAction.setOnClickListener(view -> markFavorite(view));
                 executor.execute(() -> {
                     Movie dbMovie = movieDao.fetchById(movie.getMovieId());
-                    if (dbMovie != null) {
-                        favoriteFlag = true;
-                    } else {
-                        favoriteFlag = false;
-                    }
+                    favoriteFlag = dbMovie != null;
                     setImageActionDrawable(favoriteFlag);
                 });
             } else {

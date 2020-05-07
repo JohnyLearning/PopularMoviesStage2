@@ -9,7 +9,7 @@ public enum TrailerSize {
 
     private int size;
 
-    private TrailerSize(int size) {
+    TrailerSize(int size) {
         this.size = size;
     }
 

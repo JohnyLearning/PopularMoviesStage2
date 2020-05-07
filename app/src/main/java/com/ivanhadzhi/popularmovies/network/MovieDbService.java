@@ -59,7 +59,6 @@ public class MovieDbService {
                 .client(okHttpClient)
                 .build();
         this.movieDbApi = retrofit.create(MovieDbApi.class);
-        ;
     }
 
     public Single<MoviesListResponse> getMovieList(SortBy sortBy) {

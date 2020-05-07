@@ -8,7 +8,7 @@ import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface MovieDbApi {
+interface MovieDbApi {
 
     @GET("movie/popular")
     Single<MoviesListResponse> getPopularMovies();
@@ -21,8 +21,5 @@ public interface MovieDbApi {
 
     @GET("movie/{movie_id}/reviews")
     Single<ReviewsListResponse> getReviews(@Path("movie_id") String movieId);
-
-    @GET("review/{review_id}")
-    Single<MoviesListResponse> getReviewDetail(@Path("review_id") String reviewId);
 
 }

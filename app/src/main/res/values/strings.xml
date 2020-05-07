@@ -4,6 +4,7 @@
     <string name="top_rated_movies_title">Top rated movies</string>
     <string name="favorite_movies_title">Favories</string>
     <string name="movie_details_title">Movie details</string>
+    <string name="show_trailer">Show trailer</string>
     <string name="user_rating">User rating</string>
     <string name="release_date">Release date</string>
     <string name="show_popular_movies">Most popular</string>
@@ -13,4 +14,6 @@
     <string name="remove_favorite">Removed %1$s from favorites.</string>
     <string name="generic_error">Something went wrong!</string>
     <string name="ok_button">OK</string>
+    <string name="marked_as_favorite">Marked as favorite</string>
+    <string name="marked_as_favorite_button">Marked as favorite button</string>
 </resources>

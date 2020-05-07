@@ -12,7 +12,7 @@ public enum TrailerType {
 
     private String name;
 
-    private TrailerType(String name) {
+    TrailerType(String name) {
         this.name = name;
     }
 
