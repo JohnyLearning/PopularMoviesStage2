@@ -98,7 +98,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             if (movie != null) {
                 itemBinding.setMovie(movie);
                 Picasso.get()
-                        .load(NetworkUtils.getImageURL(ImageSize.w300, movie.getPosterPath()).toString())
+                        .load(NetworkUtils.getImageURL(ImageSize.w185, movie.getPosterPath()).toString())
                         .placeholder(R.drawable.no_image)
                         .error(R.drawable.no_image)
                         .into(itemBinding.moviePoster);

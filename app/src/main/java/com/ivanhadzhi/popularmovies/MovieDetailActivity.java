@@ -1,6 +1,7 @@
 package com.ivanhadzhi.popularmovies;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -16,6 +17,7 @@ import com.ivanhadzhi.popularmovies.model.ImageSize;
 import com.ivanhadzhi.popularmovies.model.Movie;
 import com.ivanhadzhi.popularmovies.utilities.NetworkUtils;
 import com.ivanhadzhi.popularmovies.viewmodel.MovieDetailViewModel;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
@@ -56,7 +58,11 @@ public class MovieDetailActivity extends BaseActivity {
     }
 
     private void bindData(Movie movie) {
-        Picasso.get().load(NetworkUtils.getImageURL(ImageSize.w500, movie.getPosterPath()).toString()).into(dataBinding.moviePoster);
+        Picasso.get()
+                .load(NetworkUtils.getImageURL(ImageSize.w500, movie.getPosterPath()).toString())
+                .placeholder(R.drawable.no_image)
+                .error(R.drawable.no_image)
+                .into(dataBinding.moviePoster);
         dataBinding.movieTitle.setText(movie.getOriginalTitle());
         dataBinding.movieUserRating.setText(String.format("%.1f/%d", movie.getUserRating(), 10));
         dataBinding.movieSynopsis.setText(movie.getOverview());

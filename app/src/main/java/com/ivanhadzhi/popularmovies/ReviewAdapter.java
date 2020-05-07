@@ -64,9 +64,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
         void bind(Review review) {
             dataBinding.setReview(review);
-            sheetBinding.setReview(review);
             dataBinding.reviewContainer.setOnClickListener(view -> {
                 dialog.show();
+            });
+            sheetBinding.setReview(review);
+            sheetBinding.closeAction.setOnClickListener(view -> {
+                dialog.dismiss();
             });
         }
 

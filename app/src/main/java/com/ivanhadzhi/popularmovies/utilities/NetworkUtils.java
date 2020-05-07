@@ -32,7 +32,7 @@ public final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    public static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/";
+    public static final String BASE_IMAGE_URL = "https://image.tmdb.org/t/p/";
 
     public static URL getImageURL(ImageSize size, String posterPath) {
         Uri imageUri = Uri.parse(BASE_IMAGE_URL + size + posterPath).buildUpon().build();
